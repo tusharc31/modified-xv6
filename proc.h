@@ -37,6 +37,9 @@ enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
+  uint ctime;                  // Start time
+  uint etime;                  // End time
+  uint rtime;                  // Runtime
   pde_t* pgdir;                // Page table
   char *kstack;                // Bottom of kernel stack for this process
   enum procstate state;        // Process state
@@ -51,6 +54,7 @@ struct proc {
   char name[16];               // Process name (debugging)
 };
 
+int update_rtime();
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss

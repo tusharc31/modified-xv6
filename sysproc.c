@@ -27,6 +27,18 @@ sys_wait(void)
 }
 
 int
+sys_waitx(void)
+{
+	int *rtime;
+	int *wtime;
+	if(argptr(0, (void*)&wtime, 2*sizeof(wtime[0])) < 0)
+    return -1;
+	if(argptr(1, (void*)&rtime, 2*sizeof(rtime[0])) < 0)
+    return -1;
+  return waitx(wtime, rtime);
+}
+
+int
 sys_kill(void)
 {
   int pid;
