@@ -37,6 +37,25 @@ sys_waitx(void)
     return -1;
   return waitx(wtime, rtime);
 }
+int
+sys_pscall(void)
+{
+    pscall();
+	return 0;
+}
+
+int
+sys_set_priority(void)
+{
+	int new_priority;
+	int pid;
+	if(argint(0, &new_priority) < 0)
+    return -1;
+	if(argint(1, &pid) < 0)
+    return -1;
+  return set_priority(new_priority, pid);
+}
+
 
 int
 sys_kill(void)

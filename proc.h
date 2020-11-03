@@ -37,9 +37,19 @@ enum procstate { UNUSED, EMBRYO, SLEEPING, RUNNABLE, RUNNING, ZOMBIE };
 // Per-process state
 struct proc {
   uint sz;                     // Size of process memory (bytes)
+  uint surr;                   // Whether the process surrendered
+  uint spid;                   // Process id in array
+  uint cur_q;                  // Queue no.
+  uint n_run;                  // Number of times it has been selected by preprocessor.
   uint ctime;                  // Start time
   uint etime;                  // End time
   uint rtime;                  // Runtime
+  uint cwtime;                 // Wait time for MLFQ
+  uint qwtime[5];              // Queue wait times for MLFQ
+  uint wtime;                  // Time for which the process was runnable.
+  uint timeslice;              // Timeslice for the process
+  uint ded;                    // If the process should be killed of as soon as possible
+  uint priority;               // Priority
   pde_t* pgdir;                // Page table
   char *kstack;                // Bottom of kernel stack for this process
   enum procstate state;        // Process state
@@ -55,6 +65,7 @@ struct proc {
 };
 
 int update_rtime();
+int lowest_priority();
 // Process memory is laid out contiguously, low addresses first:
 //   text
 //   original data and bss
