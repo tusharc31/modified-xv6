@@ -423,23 +423,30 @@ wait(void)
   }
 }
 int update_rtime()
-{
-	acquire(&ptable.lock);
+{	
 	struct proc *p;
 	int i=0;
+	int cnt=0;
+	acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++, i++)
 	{ 
 		if(p->state == RUNNING)
+		{
+			cnt++;
 			p->rtime++;	
+		}
 		if(p->state == RUNNABLE)
 		{
+			cnt++;
 			p->cwtime++;
 			p->wtime++;
 			moveahead(i);
 		}
+		if(p->state == SLEEPING)
+			cnt++;
 	}
 	release(&ptable.lock);
-	return 0;
+	return cnt;
 }
 int
 waitx(int* wtime, int* rtime)

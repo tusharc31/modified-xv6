@@ -50,7 +50,9 @@ trap(struct trapframe *tf)
     if(cpuid() == 0){
       acquire(&tickslock);
       ticks++;
-	  update_rtime();
+	  int x = update_rtime();
+	  //if(ticks%100==0 && x>4)
+	  //pscall();
       wakeup(&ticks);
       release(&tickslock);
     }
